@@ -1,0 +1,7 @@
+# Ignore node_modules in all subfolders
+**/node_modules/
+
+# Optional: Ignore system files or VS Code settings
+.DS_Store
+.vscode/
+.env
