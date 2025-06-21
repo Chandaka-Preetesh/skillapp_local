@@ -219,7 +219,7 @@ console.log("market comporendering");
                 </div>
                 <div>
                   <label className="block text-gray-700 mb-2" htmlFor="duration">
-                    Duration (e.g., "4 weeks", "2 hours")
+                    Duration (e.g., "4 weeks", "2 hours","30 minutes")
                   </label>
                   <input
                     type="text"
@@ -315,10 +315,9 @@ console.log("market comporendering");
                         initialIsLiked={course.is_liked}
                         />
                         {console.log(course.userid+" is userid")}
-                        <span className="text-xs text-gray-500">{course.duration}</span>
-                        <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
-                          Purchased
-                        </span>
+                       
+                        <span className="text-s text-gray-500"> Duration : {course.duration}</span>
+                        
                       </div>
                     </div>
                   ))}
@@ -349,21 +348,13 @@ console.log("market comporendering");
                         </div>
                         <div className="text-right">
                           <p className="text-lg font-bold text-yellow-600">🪙 {course.price}</p>
-                          <p className="text-sm text-gray-500">{course.duration}</p>
+                          <p className="text-sm text-gray-500">Duration : {course.duration}</p>
                         </div>
                       </div>
                       <p className="text-gray-600 mb-4">{course.description}</p>
                       <div className="flex items-center justify-between mt-4">
                         <div className="flex items-center">
-                          <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden mr-2">
-                            {course.author_avatar ? (
-                              <img src={course.author_avatar} alt={course.author} className="w-full h-full object-cover" />
-                            ) : (
-                              <span className="text-xs font-medium text-gray-600">
-                                {course.author?.charAt(0)?.toUpperCase() || 'U'}
-                              </span>
-                            )}
-                          </div>
+                       
                           <span className="text-sm text-gray-600">{course.author}</span>
                         </div>
                         {isCreator(course) ? (

@@ -169,7 +169,7 @@ const ProfilePage = () => {
                   <h3 className="font-semibold text-gray-800">Activity Streak</h3>
                 </div>
                 <div className="heatmap-container">
-                  <style jsx>{`
+                  <style >{`
                     .heatmap-container .react-calendar-heatmap {
                       width: 100% !important;
                       max-width: 100% !important;

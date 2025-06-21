@@ -146,21 +146,22 @@ export const getStreak=async (req,res)=> {
   }
 }
 
-export const getRecentActivity=async(req,res)=>{
-    try {
-      const userid=req.user.userid;
-      const response=await sql`
-      SELECT type,activity
+export const getRecentActivity = async (req, res) => {
+  try {
+    const userid = req.user.userid;
+    const response = await sql`
+      SELECT type, activity, time
       FROM recent_activity2
-      WHERE userid=${userid}
-      `
-      res.json(response);
-    }
-    catch(error ) {
-      console.log("error while getting recent activity");
-      res.status(500).json({error:"error while fetching recent activity"});
-    }
-}
+      WHERE userid = ${userid}
+      ORDER BY time DESC
+    `;
+    res.json(response);
+  } catch (error) {
+    console.log("error while getting recent activity", error);
+    res.status(500).json({ error: "error while fetching recent activity" });
+  }
+};
+
 
 export const getEarnings = async (req, res) => {
   try {
@@ -176,7 +177,7 @@ export const getEarnings = async (req, res) => {
 
     // Fetch doubt transactions
     const doubtResults = await sql`
-      SELECT transaction_date, amount, 'Doubt' AS source
+      SELECT transaction_date, amount, 'Doubt Rating' AS source
       FROM doubt_transactions2
       WHERE ownerid = ${userid}
       AND transaction_date >= NOW() - INTERVAL '30 days'

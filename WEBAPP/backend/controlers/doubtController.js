@@ -3,24 +3,44 @@ import { generateGeminiReply } from "../config/ai.js";
 import { generateOpenAIReply } from "../config/ai.js";
 export const getDoubts = async (req, res) => {
   try {
-    const { topic } = req.query;    
-    const doubts = topic 
+    const { topic } = req.query;
+
+    const doubts = topic
       ? await sql`
-          SELECT * 
-          FROM doubts2 
-          WHERE topic = ${topic}
+          SELECT 
+            d.doubtid,
+            d.title,
+            d.question,
+            d.topic,
+            d.createdat,
+            d.userid,
+            u.full_name AS author
+          FROM doubts2 d
+          JOIN users2 u ON d.userid = u.userid
+          WHERE d.topic = ${topic}
+          ORDER BY d.createdat DESC
         `
       : await sql`
-          SELECT *
-          FROM doubts2 
+          SELECT 
+            d.doubtid,
+            d.title,
+            d.question,
+            d.topic,
+            d.createdat,
+            d.userid,
+            u.full_name AS author
+          FROM doubts2 d
+          JOIN users2 u ON d.userid = u.userid
+          ORDER BY d.createdat DESC
         `;
-    
+
     res.json(doubts);
   } catch (error) {
     console.error('Error fetching doubts', error);
     res.status(500).json({ error: 'Failed to fetch doubts' });
   }
 };
+
 
 
 export const createDoubt = async (req, res) => {
@@ -89,7 +109,6 @@ export const createDoubt = async (req, res) => {
   }
 };
 
-
 export const getUserDoubts=async (req, res) => {
   try {
     const userid = req.user.userid;
@@ -109,6 +128,7 @@ export const getUserDoubts=async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch user doubts' });
   }
 };
+
 
 export const getReplies = async (req, res) => {     
   try {          

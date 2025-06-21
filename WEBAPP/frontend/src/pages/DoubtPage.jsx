@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import StarRating from '../components/StarRating';
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import ReactMarkdown from "react-markdown";
 
 const Doubts = () => {
   const navigate = useNavigate();
@@ -36,6 +37,7 @@ const Doubts = () => {
           axios.get('/api/doubtplace/my-doubts')
         ]);
         setDoubts(doubtsResponse.data);
+        console.log(doubtsResponse.data);
         setTopics(topicsResponse.data);
         setMyDoubts(myDoubtsResponse.data);
         setIsLoading(false);
@@ -129,21 +131,29 @@ const Doubts = () => {
     });
   };
 
-  const AIReply = ({ aiReply }) => (
-    <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 border-l-4 border-blue-500 mb-4">
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center">
-          <div className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center mr-2">
-            <span className="text-xs font-bold text-white">AI</span>
-          </div>
-          <span className="text-sm font-medium text-gray-700">{aiReply.model_name} AI</span>
-          <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">AI Generated</span>
+const AIReply = ({ aiReply }) => (
+  <div className="bg-blue-50 rounded-md p-4 mb-4">
+    <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center">
+        <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold mr-2">
+          AI
         </div>
-        <span className="text-xs text-gray-500">{formatDate(aiReply.createdat)}</span>
+        <span className="text-sm font-medium text-gray-800">
+          {aiReply.model_name} AI
+        </span>
+        <span className="ml-2 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded">
+          AI Generated
+        </span>
       </div>
-      <p className="text-gray-700 leading-relaxed">{aiReply.reply}</p>
+      <span className="text-xs text-gray-500">{formatDate(aiReply.createdat)}</span>
     </div>
-  );
+
+    {/* Render markdown reply */}
+    <ReactMarkdown>
+      {aiReply.reply}
+    </ReactMarkdown>
+  </div>
+);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -292,15 +302,12 @@ const Doubts = () => {
                   <p className="text-gray-600 mb-4">{doubt.question}</p>
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
-                      <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden mr-2">
-                        {doubt.author_avatar ? (
-                          <img src={doubt.author_avatar} alt={doubt.author} className="w-full h-full object-cover" />
-                        ) : (
-                          <span className="text-xs font-medium text-gray-600">
-                            {doubt.author?.charAt(0)?.toUpperCase() || 'U'}
-                          </span>
-                        )}
-                      </div>
+                    <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden mr-2">
+  <span className="text-xs font-medium text-gray-600">
+    {doubt.author?.trim().charAt(0).toUpperCase() || 'U'}
+  </span>
+</div>
+{console.log(doubt.author+"from frontend")}
                       <span className="text-sm text-gray-600">{doubt.author}</span>
                     </div>
                     <div className="flex gap-2">
